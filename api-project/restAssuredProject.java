@@ -1,0 +1,72 @@
+package Activities;
+
+import org.testng.annotations.Test;
+
+import static io.restassured.RestAssured.given;
+import org.testng.annotations.BeforeClass;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
+
+public class restAssuredProject {
+    
+    // Declare request specification
+    RequestSpecification requestSpec;
+    // Declare response specification
+    ResponseSpecification responseSpec;
+    // Global properties
+    String sshKey="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDppAZx/tHpr6gLQOe2GYaeemc9zXoR0sSVaQs4Kx4EpXHgvnc+5WwS5O+v/gtXVtZNpwTVzt6QZnvet699Fioh373ixLrWUxIaUEWXne+EfU/3A6xX5qULhHhfVX/fHOefXBMOJLB3QWDU3oq8MppClwtiyShciBPAGRcsugZrkywRQtBq329gQa+kzEZL0/n9A5Z7GUN/qj7Uw0XYPa8mFgZPIhrkkvVxLJvrYedGkYmcKXRP/Im5n7SZivKb+dUJWw4f4yGn5a0hnpqDiwQt22wq3Vo2C3yYssiPyl3T9abKw9Ki8bX2/p89AmG1Hr07OSIaxzDr5MRuNK/duCN9";
+    int sshKeyId;
+      
+    @BeforeClass
+    public void setUp() {
+        // Create request specification
+        requestSpec = new RequestSpecBuilder()
+        // Set content type
+        .setContentType(ContentType.JSON)
+        // Set base URL
+        .addHeader("Authorization", "token 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")
+        // Set base URL
+        .setBaseUri("https://api.github.com")
+        //Build request specification
+        .build();
+
+    }
+    
+	@Test(priority = 1)
+	// Test case using a DataProvider
+	public void addKeys() {
+		String reqBody = "{\"title\": \"TestKey\", \"key\": \"" + sshKey + "\" }";
+		Response response = given().spec(requestSpec) // Use requestSpec
+				.body(reqBody) // Send request body
+				.when().post("/user/keys"); // Send POST request		
+		String resBody = response.getBody().asPrettyString();
+		System.out.println(resBody);
+		sshKeyId = response.then().extract().path("id");		
+		// Assertions
+		response.then().statusCode(201);
+	}	
+	
+	@Test(priority = 2)
+	// Test case using a DataProvider
+	public void getKeys() {
+		Response response = given().spec(requestSpec) // Use requestSpec
+				.when().get("/user/keys"); // Send GET Request		
+		String resBody = response.getBody().asPrettyString();
+		System.out.println(resBody);		// Assertions
+		response.then().statusCode(200);
+	}	
+	
+	@Test(priority = 3)
+	// Test case using a DataProvider
+	public void deleteKeys() {
+		Response response = given().spec(requestSpec) // Use requestSpec
+				.pathParam("keyId", sshKeyId).when().delete("/user/keys/{keyId}"); // Send GET Request		
+		String resBody = response.getBody().asPrettyString();
+		System.out.println(resBody);		// Assertions
+		response.then().statusCode(204);
+	}
+
+}
