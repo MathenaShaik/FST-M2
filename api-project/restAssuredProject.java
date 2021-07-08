@@ -17,7 +17,7 @@ public class restAssuredProject {
     // Declare response specification
     ResponseSpecification responseSpec;
     // Global properties
-    String sshKey="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDppAZx/tHpr6gLQOe2GYaeemc9zXoR0sSVaQs4Kx4EpXHgvnc+5WwS5O+v/gtXVtZNpwTVzt6QZnvet699Fioh373ixLrWUxIaUEWXne+EfU/3A6xX5qULhHhfVX/fHOefXBMOJLB3QWDU3oq8MppClwtiyShciBPAGRcsugZrkywRQtBq329gQa+kzEZL0/n9A5Z7GUN/qj7Uw0XYPa8mFgZPIhrkkvVxLJvrYedGkYmcKXRP/Im5n7SZivKb+dUJWw4f4yGn5a0hnpqDiwQt22wq3Vo2C3yYssiPyl3T9abKw9Ki8bX2/p89AmG1Hr07OSIaxzDr5MRuNK/duCN9";
+    String sshKey="ssh-rsa ";
     int sshKeyId;
       
     @BeforeClass
